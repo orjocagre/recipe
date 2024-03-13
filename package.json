@@ -1,0 +1,24 @@
+{
+  "name": "recipe_app",
+  "version": "1.0.0",
+  "description": "This is a website that provides ideas for what to cook based on the ingredients available.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "githubo.com"
+  },
+  "keywords": [
+    "nodejs",
+    "javascript",
+    "html",
+    "css",
+    "express",
+    "postgres",
+    "docker"
+  ],
+  "author": "Orlando",
+  "license": "MIT"
+}
