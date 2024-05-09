@@ -35,13 +35,13 @@ function Home() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6">
         {
-          context.recipes.map((recipe) => (
-            <Card recipe={recipe}/>
+          context.recipes && context.recipes.map((recipe) => (
+            <Card recipe={recipe} key={recipe.name}/>
           ))
         }
         {
-          context.recipes.map((recipe) => (
-            <Card recipe={recipe}/>
+          context.recipes && context.recipes.map((recipe) => (
+            <Card recipe={recipe} key={recipe.name + '2'}/>
           ))
         }
       </div>

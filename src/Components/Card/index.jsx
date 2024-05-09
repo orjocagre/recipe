@@ -85,14 +85,14 @@ function Card({recipe}) {
         <span className="font-primaryFont text-3xl text-secondaryColor">{recipe.name}</span>
         <div className="flex gap-2">
           <ClockIcon className="w-6 h-6 text-secondaryColor"/>
-          <span>20 min</span>
+        <span>{recipe.time} min</span>
         </div>
         <div className="flex gap-2">
           <UserIcon className="w-6 h-6 text-secondaryColor"/>
-          <span>4 porciones</span>
+          <span>{recipe.servings} personas</span>
         </div>
         {/* <span className="text-sm">tomate · cebolla · cilanto · hieva buena · perejil · filete de pollo · zanahoria · albahaca · cumino · arroz · limon · sal · pimienta </span> */}
-        <span className="text-sm">{randomIngredients()}</span>
+        <span className="text-sm">{recipe.ingredients.map(ingredient => ingredient.name).join(' · ')}</span>
       </div>
     </article>
   )
