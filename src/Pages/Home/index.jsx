@@ -4,6 +4,7 @@ import Layout from "../../Components/Layout"
 import Card from "../../Components/Card"
 import { PlusIcon } from "@heroicons/react/24/outline"
 import { MagnifyingGlassPlusIcon } from "@heroicons/react/24/outline"
+import { NavLink } from "react-router-dom"
 
 function Home() {
 
@@ -26,10 +27,10 @@ function Home() {
             <MagnifyingGlassPlusIcon className="h6 w-6"/>
             Busqueda especial
           </button>
-          <button className="font-secondaryFont bg-primaryColor text-black border border-primaryColor p-2 rounded-lg flex items-center gap-1 hidden sm:flex">
+          <NavLink to="/NewRecipe" className="font-secondaryFont bg-primaryColor text-black border border-primaryColor p-2 rounded-lg flex items-center gap-1 hidden sm:flex">
             <PlusIcon className="h-6 w-6"/>
             Agregar nueva
-          </button>
+          </NavLink>
         </div>
       </div>
 
@@ -37,11 +38,6 @@ function Home() {
         {
           context.recipes && context.recipes.map((recipe) => (
             <Card recipe={recipe} key={recipe.name}/>
-          ))
-        }
-        {
-          context.recipes && context.recipes.map((recipe) => (
-            <Card recipe={recipe} key={recipe.name + '2'}/>
           ))
         }
       </div>

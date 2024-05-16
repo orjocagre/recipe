@@ -10,7 +10,9 @@ const SideMenu = () => {
       return (
         <>
           <div className="fixed top-14 left-0 w-full h-svh z-30 bg-lightColor flex flex-col align-baseline p-4">
-            <p className="font-secondaryFont text-xl text-secondaryColor pb-5 pt-5">Orlando</p>
+            {context.account && 
+            <p className="font-secondaryFont text-xl text-secondaryColor pb-5 pt-5">{context.account.userName}</p>
+            }
             <hr />
             <button className="text-left p-4 font-secondaryFont">Mi cuenta</button>
             <button className="text-left p-4 font-secondaryFont">Iniciar Sesion</button>

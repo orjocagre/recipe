@@ -35,6 +35,9 @@ function Login() {
   function addNewIngredient(event) {
     event.preventDefault()
     if(searchIngredient) {
+      if(userRegularIngredients.find(ingredient => ingredient.name == searchIngredient)) {
+        return
+      }
       const ingredient = {id:null, name:searchIngredient}
       setUserRegularIngredients([...userRegularIngredients, ingredient])
       setSearchIngredient('')
@@ -107,7 +110,7 @@ function Login() {
     }
   }
 
-  function login() {
+  function logIn() {
     post('http://localhost:3000/api/v1/users/login', {
       userName: formData.userName,
       password: formData.password,
@@ -142,17 +145,14 @@ function Login() {
         return data
       }
     })
-    .then(data => {
-      context.setAccount(data)
-      return(data.id)
-    })
+    .then(data => (data.id))
     .then(userId => {
       userRegularIngredients.map(ingredient => {
         saveIngredient(ingredient, userId)
       })
     }
     )
-    .then(() => login())
+    .then(() => logIn())
   }
     
 
@@ -168,10 +168,6 @@ function Login() {
   }, [searchIngredient, inputFocus]);
 
   function SearchDropdown() {
-  
-    const smallContainer = "fixed w-full h-[calc(100vh-3.5rem)] top-14 left-0 z-30 flex flex-col overflow-scroll bg-lightColor"
-    const largeContainer = "fixed w-[calc(50vw-2rem)] h-min top-14 left-[calc(25vw-1rem)] z-30 flex flex-col drop-shadow-2xl rounded overflow-hidden bg-lightColor"
-
     return (
       <div className="absolute w-full top-10 left-0 z-30 flex flex-col drop-shadow-2xl rounded overflow-hidden bg-white">
         {
@@ -231,7 +227,7 @@ function Login() {
           </div>
           <div className="mt-2 flex gap-4 flex-wrap">
             {userRegularIngredients && userRegularIngredients.map((ingredient) => (
-              <IngredientItem key={ingredient.id} id={ingredient.id} ingredientName={ingredient.name}/>
+              <IngredientItem key={ingredient.name} id={ingredient.id} ingredientName={ingredient.name}/>
             ))}
           </div>
 

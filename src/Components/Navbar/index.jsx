@@ -25,6 +25,7 @@ function Navbar() {
   const closeSearch = () => {
     context.setIsSearchActive(false)
     context.setIsSideMenuActive(false)
+    context.account && console.log(context.account)
   }
 
 
@@ -73,7 +74,11 @@ function Navbar() {
         <XMarkIcon className={cancelSearchButton} onClick={() => context.setSearchRecipeOrIngredient('')} />
         <SearchDropdown/>
       </div>
+      {context.account ? 
+      <NavLink to='/' className="font-secondaryFont text-lg font-bold text-lightColor hidden sm:block" onClick={() => setIsAccountMenuActive(!isAccountMenuActive)}>{context.account.userName}</NavLink>:
       <NavLink to='/Login' className="font-secondaryFont text-lg font-bold text-lightColor hidden sm:block">Iniciar Sesion</NavLink>
+      }
+      
 
       <div className={isAccountMenuActive ? activeUserContainer : inactiveUserContainer}>
         <button className="font-secondaryFont text-lg p-3 bg-white rounded-lg hover:bg-lightColor">Mi cuenta</button>

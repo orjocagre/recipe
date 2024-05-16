@@ -36,7 +36,8 @@ function Login() {
     .then(data =>  {
       if(data && data.userName) {
         context.setAccount(data)
-        console.log('redireccion')
+        console.log(data)
+        console.log(context.account)
         navigate('/')
       }
       else {

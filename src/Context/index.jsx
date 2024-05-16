@@ -7,6 +7,12 @@ export const RecipeProvider = ({ children }) => {
   // const [account, setAccount] = useState(null)
   const [account, setAccount] = useState(null);
 
+  useEffect(() => {
+    console.log('cambio')
+    console.log(account)
+    console.log('end cambio')
+  },[account])
+
   // nav side menu (phone)
   const [isSideMenuActive, setIsSideMenuActive] = useState(false);
 

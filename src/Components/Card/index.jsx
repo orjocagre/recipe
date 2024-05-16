@@ -73,7 +73,7 @@ function Card({recipe}) {
     <article className="rounded-lg h-min w-full">
       <figure className="w-full h-1/2 relative">
         <span></span>
-        <img className="w-full h-full object-cover rounded-lg" src={recipe.image} alt="" />
+        <img className="w-full h-full object-cover rounded-lg" src={recipe.image ? recipe.image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiL2jQwQ5jf4rVj0CCh_PTZBqVHG-vK72HqeWyWIaIPMxKMx4DhEYr_4lfAKHP8S7RKTI&usqp=CAU'} alt="" />
         <div className="absolute rounded-xl top-2 right-2 bg-white">
           <EllipsisVerticalIcon className="w-6 h6 text-black" />
         </div>
@@ -83,6 +83,8 @@ function Card({recipe}) {
 
       <div className="w-full h-[calc(50%-0.5rem)] rounded-lg mt-2 flex flex-col gap-2">
         <span className="font-primaryFont text-3xl text-secondaryColor">{recipe.name}</span>
+        <hr />
+        <span className="font-secondaryFont text-sm text-secondaryColor">por {recipe.user.userName}</span>
         <div className="flex gap-2">
           <ClockIcon className="w-6 h-6 text-secondaryColor"/>
         <span>{recipe.time} min</span>
