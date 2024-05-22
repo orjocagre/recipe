@@ -422,6 +422,12 @@ function NewRecipe() {
             </div> 
              
           </div>
+          {window.innerWidth < 640 && 
+              <div className="flex gap-3 justify-end mt-4">
+                <Link to={"/"} className="font-secondaryFont bg-lightColor p-4 w-minfont-secondaryFont text-black border-2 bg-white border-primaryColor p-2 rounded-lg flex items-center gap-1 w-min">Cancelar</Link>
+                <button className="font-secondaryFont bg-lightColor p-4 w-minfont-secondaryFont bg-primaryColor text-black border-2 border-primaryColor p-2 rounded-lg flex items-center gap-1 w-min" type="submit">Guardar</button>
+              </div>            
+            }
         </div>
       </form>
     </Layout>

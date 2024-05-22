@@ -6,12 +6,13 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"
 import { Bars3Icon } from "@heroicons/react/24/outline"
 import { ArrowLeftIcon } from "@heroicons/react/24/outline"
 import { XMarkIcon } from "@heroicons/react/24/outline"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 
 function Navbar() {
 
 
   const context = useContext(RecipeContext)
+  const navigate = useNavigate()
 
   const [isAccountMenuActive, setIsAccountMenuActive] = useState(false)
 
@@ -21,6 +22,24 @@ function Navbar() {
   const activeStyleButton = "font-secondaryFont text-lg font-bold text-white border-b-2 border-white hidden sm:block"
   const inactiveStyleButton = "font-secondaryFont text-lg font-bold text-lightColor hidden sm:block"
 
+  function menuLoseFocus(event) {
+    let element = null
+    try {
+      element = event.relatedTarget.attributes.name.value
+    }
+    catch(err) {
+      setIsAccountMenuActive(false)
+    }
+
+    if(element != 'btnMyAccount' && element != 'btnCerrarSesion') {
+      setIsAccountMenuActive(false)
+    }
+  }
+
+  function openMyAccount() {
+    navigate('/MyAccount')
+    setIsAccountMenuActive(false)
+  }
 
   const closeSearch = () => {
     context.setIsSearchActive(false)
@@ -75,14 +94,14 @@ function Navbar() {
         <SearchDropdown/>
       </div>
       {context.account ? 
-      <NavLink to='/' className="font-secondaryFont text-lg font-bold text-lightColor hidden sm:block" onClick={() => setIsAccountMenuActive(!isAccountMenuActive)}>{context.account.userName}</NavLink>:
+      <button className="font-secondaryFont text-lg font-bold text-lightColor hidden sm:block" onClick={() => setIsAccountMenuActive(!isAccountMenuActive)} onBlur={event => menuLoseFocus(event)}>{context.account.userName}</button>:
       <NavLink to='/Login' className="font-secondaryFont text-lg font-bold text-lightColor hidden sm:block">Iniciar Sesion</NavLink>
       }
       
 
       <div className={isAccountMenuActive ? activeUserContainer : inactiveUserContainer}>
-        <button className="font-secondaryFont text-lg p-3 bg-white rounded-lg hover:bg-lightColor">Mi cuenta</button>
-        <button className="font-secondaryFont text-lg p-3 bg-white rounded-lg hover:bg-lightColor text-red-600">Cerrar sesion</button>
+        <button className="font-secondaryFont text-lg p-3 bg-white rounded-lg hover:bg-lightColor" name="btnMyAccount" onClick={() => openMyAccount()}>Mi cuenta</button>
+        <button className="font-secondaryFont text-lg p-3 bg-white rounded-lg hover:bg-lightColor text-red-600" name="btnCerrarSesion">Cerrar sesion</button>
       </div>
 
       <SideMenu/>

@@ -6,6 +6,32 @@ export const RecipeProvider = ({ children }) => {
   // Logged In account
   // const [account, setAccount] = useState(null)
   const [account, setAccount] = useState(null);
+  const [updateAccount, setUpdateAccount] = useState(false)
+
+  async function login(userName, password) {
+
+    fetch('http://localhost:3000/api/v1/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({userName, password})
+      })
+      .then(response => (response.json()))
+      .then(data =>  {
+        if(data && data.userName) {
+          setAccount(data)
+          return true
+        }
+      })
+  }
+
+  useEffect(() => {
+    if(updateAccount) {
+      login(account.userName, account.password)
+      setUpdateAccount(false)
+    }
+  },[updateAccount])
 
   useEffect(() => {
     console.log('cambio')
@@ -153,10 +179,12 @@ export const RecipeProvider = ({ children }) => {
   // ];
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/v1/recipes")
+    const userId = account ? account.id : ''
+    // console.log("http://localhost:3000/api/v1/recipes/all/" + userId)
+    fetch(("http://localhost:3000/api/v1/recipes/all/" + userId))
       .then((response) => response.json())
       .then((data) => setRecipes(data));
-  }, []);
+  }, [account]);
 
   const [recipes, setRecipes] = useState(null);
 
@@ -171,6 +199,9 @@ export const RecipeProvider = ({ children }) => {
 
   // toggle search view in small devices
   const [isSearchActive, setIsSearchActive] = useState(false);
+
+  // the selected recipe to show in ViewRecipe
+  const [selectedRecipe, setSelectedRecipe] = useState(null)
 
   useEffect(() => {
     if (searchRecipeOrIngredient) {
@@ -228,6 +259,9 @@ export const RecipeProvider = ({ children }) => {
         setIsSideMenuActive,
         ingredients,
         setIngredients,
+        selectedRecipe,
+        setSelectedRecipe,
+        setUpdateAccount,
       }}
     >
       {children}
