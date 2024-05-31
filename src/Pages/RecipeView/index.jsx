@@ -45,15 +45,15 @@ function RecipeView() {
         </div>
       </div>
       <div className="sm:flex gap-4">
-        <div className="flex-1 bg-lightColor rounded-lg p-4 mt-4">
-          <h2 className="font-secondaryFont text-lg font-bold text-secondaryColor mb-2">Ingredientes</h2>
+        <div className="bg-lightColor rounded-lg p-8 mt-4">
+          <h2 className="font-secondaryFont text-lg font-bold text-secondaryColor mb-8">Ingredientes</h2>
           {context.selectedRecipe.ingredients.map((ingredient, index) => (
             <IngredientItem key={index} ingredient={ingredient}/>
           ))}
         </div>
-        <div className="flex-1 bg-lightColor rounded-lg p-4 mt-4">
-          <h2 className="font-secondaryFont text-lg font-bold text-secondaryColor mb-2">Procedimiento</h2>
-          <p className="font-secondaryFont">{context.selectedRecipe.procedure.replace(/\n/g, '<br/>')}</p>
+        <div className="flex-1 bg-lightColor rounded-lg p-8 mt-4">
+          <h2 className="font-secondaryFont text-lg font-bold text-secondaryColor mb-8">Procedimiento</h2>
+          <p className="font-secondaryFont" dangerouslySetInnerHTML={{ __html: context.selectedRecipe.procedure.replace(/\n/g, '<br/>') }}></p>
         </div>
       </div>
     </Layout>

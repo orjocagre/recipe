@@ -36,6 +36,9 @@ function Login() {
     .then(data =>  {
       if(data && data.userName) {
         context.setAccount(data)
+        localStorage.setItem('account', JSON.stringify(data))
+        context.setIsSignedOut(false)
+        localStorage.setItem('sign-out', JSON.stringify(false))
         console.log(data)
         console.log(context.account)
         navigate('/')

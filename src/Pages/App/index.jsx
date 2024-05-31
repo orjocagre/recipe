@@ -1,5 +1,5 @@
 import { BrowserRouter, useRoutes } from 'react-router-dom'
-import { RecipeProvider } from '../../Context'
+import { RecipeProvider, initializeLocalStorage } from '../../Context'
 import Home from '../Home'
 import RecipeView from '../RecipeView'
 import NewRecipe from '../NewRecipe'
@@ -23,6 +23,8 @@ const AppRoutes = () => {
 }
 
 const App = () => {
+  initializeLocalStorage()
+  
   return (
     <RecipeProvider>
       <BrowserRouter>

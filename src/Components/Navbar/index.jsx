@@ -10,7 +10,6 @@ import { NavLink, useNavigate } from "react-router-dom"
 
 function Navbar() {
 
-
   const context = useContext(RecipeContext)
   const navigate = useNavigate()
 
@@ -34,6 +33,13 @@ function Navbar() {
     if(element != 'btnMyAccount' && element != 'btnCerrarSesion') {
       setIsAccountMenuActive(false)
     }
+  }
+
+  function handleSignOut() {
+    const stringifiedSignOut = JSON.stringify(true)
+    localStorage.setItem('sign-out', stringifiedSignOut)
+    context.setIsSignedOut(true)
+    setIsAccountMenuActive(false)
   }
 
   function openMyAccount() {
@@ -85,7 +91,7 @@ function Navbar() {
   return (
     <header className="fixed p-4 shadow-md h-14 w-full bg-secondaryColor left-0 top-0 flex items-center justify-between">
       <Bars3Icon onClick={() => context.setIsSideMenuActive(!context.isSideMenuActive)} className={hamburgerButton} />
-      <p className={headerLogo}>recipe</p>
+      <NavLink to='/' className={headerLogo}>recipe</NavLink>
       <div className={searchContainer}>
         <ArrowLeftIcon onClick={() => closeSearch()} className={searchBackButton} />
         <input className={searchInput} value={context.searchRecipeOrIngredient} onChange={event => {context.setSearchRecipeOrIngredient(event.target.value)}} type="text" placeholder="Buscar receta o ingrediente" />
@@ -93,7 +99,7 @@ function Navbar() {
         <XMarkIcon className={cancelSearchButton} onClick={() => context.setSearchRecipeOrIngredient('')} />
         <SearchDropdown/>
       </div>
-      {context.account ? 
+      {(context.account && !context.isSignedOut) ? 
       <button className="font-secondaryFont text-lg font-bold text-lightColor hidden sm:block" onClick={() => setIsAccountMenuActive(!isAccountMenuActive)} onBlur={event => menuLoseFocus(event)}>{context.account.userName}</button>:
       <NavLink to='/Login' className="font-secondaryFont text-lg font-bold text-lightColor hidden sm:block">Iniciar Sesion</NavLink>
       }
@@ -101,7 +107,7 @@ function Navbar() {
 
       <div className={isAccountMenuActive ? activeUserContainer : inactiveUserContainer}>
         <button className="font-secondaryFont text-lg p-3 bg-white rounded-lg hover:bg-lightColor" name="btnMyAccount" onClick={() => openMyAccount()}>Mi cuenta</button>
-        <button className="font-secondaryFont text-lg p-3 bg-white rounded-lg hover:bg-lightColor text-red-600" name="btnCerrarSesion">Cerrar sesion</button>
+        <NavLink to='/Login' className="font-secondaryFont text-lg p-3 bg-white rounded-lg hover:bg-lightColor text-red-600" name="btnCerrarSesion" onClick={() => handleSignOut()}>Cerrar sesion</NavLink>
       </div>
 
       <SideMenu/>

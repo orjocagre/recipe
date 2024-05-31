@@ -174,7 +174,6 @@ function NewRecipe() {
     else {
 
       post('http://localhost:3000/api/v1/ingredients/', {
-        userId: context.account.id, 
         name: recipeIngredient.ingredient.name
       })
       .then(response => (response.json()))

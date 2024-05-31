@@ -72,6 +72,11 @@ function Login() {
 
   function saveIngredient(ingredient, userId) {
     if(ingredient.id) {
+      console.log('http://localhost:3000/api/v1/regular_ingredients/')
+      console.log({
+        userId: userId, 
+        ingredientId: ingredient.id
+      })
       post('http://localhost:3000/api/v1/regular_ingredients/', {
         userId: userId, 
         ingredientId: ingredient.id
@@ -87,12 +92,20 @@ function Login() {
       })
     }
     else {
+      console.log('http://localhost:3000/api/v1/ingredients/')
+      console.log({
+        name: ingredient.name
+      })
       post('http://localhost:3000/api/v1/ingredients/', {
-        userId: userId, 
         name: ingredient.name
       })
       .then(response => (response.json()))
       .then(data => {
+        console.log('http://localhost:3000/api/v1/regular_ingredients/')
+        console.log({
+          userId: userId, 
+          ingredientId: data.id
+        })
         post('http://localhost:3000/api/v1/regular_ingredients/', {
           userId: userId, 
           ingredientId: data.id
@@ -111,6 +124,11 @@ function Login() {
   }
 
   function logIn() {
+    console.log('http://localhost:3000/api/v1/users/login')
+        console.log({
+          userName: formData.userName,
+          password: formData.password,
+        })
     post('http://localhost:3000/api/v1/users/login', {
       userName: formData.userName,
       password: formData.password,
@@ -119,6 +137,9 @@ function Login() {
     .then(data =>  {
       if(data && data.userName) {
         context.setAccount(data)
+        context.setIsSignedOut(false)
+        localStorage.setItem('account', JSON.stringify(data))
+        localStorage.setItem('sign-out', JSON.stringify(false))
         navigate('/')
       }
     })
@@ -134,6 +155,9 @@ function Login() {
 
     const userObject = formData
     delete userObject.confirmPassword
+
+    console.log('http://localhost:3000/api/v1/users/')
+    console.log(userObject)
 
     post('http://localhost:3000/api/v1/users/', userObject)
     .then(response => {
