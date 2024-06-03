@@ -16,8 +16,8 @@ export const initializeLocalStorage = () => {
   }
 
   if(!signOutInLocalStorage) {
-    localStorage.setItem('sign-out', JSON.stringify(false))
-    parsedSignOut = false
+    localStorage.setItem('sign-out', JSON.stringify(true))
+    parsedSignOut = true
   } else {
     parsedSignOut = JSON.parse(signOutInLocalStorage)
   }
@@ -50,14 +50,23 @@ export const RecipeProvider = ({ children }) => {
   // List of recipes
   const [recipes, setRecipes] = useState(null);
 
-  // List of searchedRecipes · Just recipes
+  // Search input (search box) · Recipe or ingredient typed
+  const [searchRecipeOrIngredient, setSearchRecipeOrIngredient] = useState("");
+
+  // List of searched recipes (Search box) · Just recipes
   const [searchedRecipes, setSearchedRecipes] = useState(null);
 
-  // List of searchedRecipesByIngredient · Recipes grouped by ingredient
+  // List of searched recipes by ingredient (Search box) · Recipes grouped by ingredient
   const [searchedByIngredient, setSearchedByIngredient] = useState(null);
 
-  // Search input · Recipe or ingredient typed
-  const [searchRecipeOrIngredient, setSearchRecipeOrIngredient] = useState("");
+  // Text searched (Home) 
+  const [textSearched, setTextSearched] = useState('')
+
+  // List of searched recipes (Home) · Just recipes
+  const [searchedRecipesHome, setSearchedRecipesHome] = useState(null);
+
+  // List of searched recipes by ingredient (Home) · Recipes grouped by ingredient
+  const [searchedByIngredientHome, setSearchedByIngredientHome] = useState(null);
 
   // Recipe detail · Show recipe
   const [selectedRecipe, setSelectedRecipe] = useState(null)
@@ -84,33 +93,13 @@ export const RecipeProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    console.log('-----------------------account' + (account ? 'true': 'false'))
     if(updateAccount) {
-      if(account) {
+      if(Object.keys(account).length > 0) {
         login(account.userName, account.password)
       }
       setUpdateAccount(false)
     }
   },[updateAccount])
-
-  // useEffect(() => {
-  //   console.log('cambio')
-  //   console.log(account)
-  //   console.log('end cambio')
-  //   console.log('-----------------------account 2')
-
-  // },[account])
-
-  
-
-  // list of ingredients
-    // fetch("http://localhost:3000/api/v1/ingredients/user/" + 0)
-    //   .then((response) => response.json())
-    //   .then((data) => setIngredients(data))
-    //   .then(()=> {console.log('succes in firt ingredient fetch')})
-    //   .catch((err) => {
-    //     new Error('First ingredients fetch ' + err)
-    //   })
 
   // List of displayed Recipes
   // const recipeList = [
@@ -240,18 +229,22 @@ export const RecipeProvider = ({ children }) => {
   // ];
 
   useEffect(() => {
-    console.log('-----------------------account 3')
 
-    let userId = account ? account.id : ''
+    let userId = Object.keys(account).length > 0 ? account.id : ''
     userId = isSignedOut ? '' : userId
 
     // Update recipe list
     fetch(("http://localhost:3000/api/v1/recipes/all/" + userId))
       .then((response) => response.json())
-      .then((data) => setRecipes(data));
+      .then((data) => {
+        setRecipes(data)
+        setSearchedRecipesHome(data)
+        setSearchedByIngredientHome(null)
+      });
 
     // Update ingredient list
     userId = userId ? userId : 0
+    console.log(userId)
     fetch("http://localhost:3000/api/v1/ingredients/user/" + userId)
       .then((response) => response.json())
       .then((data) => setIngredients(data));
@@ -260,7 +253,6 @@ export const RecipeProvider = ({ children }) => {
   
 
   useEffect(() => {
-    console.log('-----------------------rec serch rec')
 
     if (searchRecipeOrIngredient) {
       setIsSearchActive(true);
@@ -322,6 +314,12 @@ export const RecipeProvider = ({ children }) => {
         selectedRecipe,
         setSelectedRecipe,
         setUpdateAccount,
+        searchedRecipesHome,
+        setSearchedRecipesHome,
+        searchedByIngredientHome,
+        setSearchedByIngredientHome,
+        textSearched,
+        setTextSearched,
       }}
     >
       {children}

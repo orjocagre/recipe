@@ -10,7 +10,7 @@ const SearchDropdown = () => {
   if (context.isSearchActive) {
 
     const smallContainer = "fixed w-full h-[calc(100vh-3.5rem)] top-14 left-0 z-30 flex flex-col overflow-scroll bg-lightColor"
-    const largeContainer = "fixed w-[calc(50vw-2rem)] h-min top-14 left-[calc(25vw-1rem)] z-30 flex flex-col drop-shadow-2xl rounded overflow-hidden bg-lightColor"
+    const largeContainer = "fixed w-[calc(50vw)] h-min top-14 left-1/4 z-30 flex flex-col drop-shadow-2xl rounded overflow-hidden bg-lightColor"
 
     return (
       <div className={ window.innerWidth<640 ? smallContainer : largeContainer}>

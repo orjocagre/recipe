@@ -35,6 +35,23 @@ function Navbar() {
     }
   }
 
+  function handleEnterSearch(event) {
+    if(event.key === 'Enter') {
+      if(context.searchRecipeOrIngredient == '') {
+        context.setSearchedRecipesHome(context.recipes)
+        context.setSearchedByIngredientHome([])
+        context.setTextSearched('')
+      }
+      else {
+        context.setSearchedRecipesHome(context.searchedRecipes)
+        context.setSearchedByIngredientHome(context.searchedByIngredient)
+        context.setSearchRecipeOrIngredient('')
+        context.setTextSearched(event.target.value)
+      }
+      
+    }
+  }
+
   function handleSignOut() {
     const stringifiedSignOut = JSON.stringify(true)
     localStorage.setItem('sign-out', stringifiedSignOut)
@@ -67,7 +84,7 @@ function Navbar() {
   searchButton = 'h-6 w-6 text-white sm:text-darkColor'
   cancelSearchButton = 'hidden w-6 h-6 text-lightColor cursor-pointer'
   hamburgerButton = 'h-6 w-6 sm:hidden text-white'
-  searchContainer = 'sm:w-1/2 h-10 p-2 rounded-lg sm:bg-lightColor flex items-center'
+  searchContainer = 'sm:absolute sm:w-1/2 sm:left-1/4 h-10 p-2 rounded-lg sm:bg-lightColor flex items-center'
   searchInput = 'flex-1 rounded-lg p-2 hidden sm:block bg-lightColor font-secondaryFont focus:outline-none'
   
   if (context.isSearchActive) {
@@ -78,7 +95,7 @@ function Navbar() {
       searchButton = 'hidden h-6 w-6 text-white sm:text-darkColor'
       cancelSearchButton = 'w-6 h-6 text-lightColor'
       hamburgerButton = 'hidden h-6 w-6 sm:hidden text-white'
-      searchContainer = 'w-full sm:w-1/2 h-10 rounded-lg sm:bg-lightColor flex items-center'
+      searchContainer = 'sm:static w-full sm:w-1/2 h-10 rounded-lg sm:bg-lightColor flex items-center'
       searchInput = 'flex-1 rounded-lg p-2 sm:block bg-secondaryColor sm:bg-lightColor font-secondaryFont text-lightColor focus:outline-none'
     
     } else {
@@ -94,12 +111,12 @@ function Navbar() {
       <NavLink to='/' className={headerLogo}>recipe</NavLink>
       <div className={searchContainer}>
         <ArrowLeftIcon onClick={() => closeSearch()} className={searchBackButton} />
-        <input className={searchInput} value={context.searchRecipeOrIngredient} onChange={event => {context.setSearchRecipeOrIngredient(event.target.value)}} type="text" placeholder="Buscar receta o ingrediente" />
+        <input className={searchInput} value={context.searchRecipeOrIngredient} onChange={event => {context.setSearchRecipeOrIngredient(event.target.value)}} onKeyDown={event => handleEnterSearch(event)} type="text" placeholder="Buscar receta o ingrediente" />
         <MagnifyingGlassIcon onClick={() => window.innerWidth < 640 && context.setIsSearchActive(true)} className={searchButton} />
         <XMarkIcon className={cancelSearchButton} onClick={() => context.setSearchRecipeOrIngredient('')} />
         <SearchDropdown/>
       </div>
-      {(context.account && !context.isSignedOut) ? 
+      {(Object.keys(context.account).length > 0 && !context.isSignedOut) ? 
       <button className="font-secondaryFont text-lg font-bold text-lightColor hidden sm:block" onClick={() => setIsAccountMenuActive(!isAccountMenuActive)} onBlur={event => menuLoseFocus(event)}>{context.account.userName}</button>:
       <NavLink to='/Login' className="font-secondaryFont text-lg font-bold text-lightColor hidden sm:block">Iniciar Sesion</NavLink>
       }
