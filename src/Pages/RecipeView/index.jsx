@@ -10,13 +10,15 @@ function RecipeView() {
 
   function IngredientItem({ingredient}) {
     return (
-      <div className="flex items-center">
-        <div className="bg-secondaryColor w-2 h-2 rounded-lg mr-2"></div>
-        <p>{ingredient.RecipeIngredient.amount || ''}</p>
-        {ingredient.RecipeIngredient.amount && <p>&nbsp;</p>}
-        <p>{ingredient.name}</p>
-        <p>&nbsp;</p>
-        <p>{ingredient.RecipeIngredient.description || ''}</p>
+      <div className="flex items-start">
+        <div className="bg-secondaryColor w-2 h-2 rounded-lg mr-2 mt-2"></div>
+        <p className="flex flex-wrap">
+          <p>{ingredient.RecipeIngredient.amount || ''}</p>
+          {ingredient.RecipeIngredient.amount && <p>&nbsp;</p>}
+          <p>{ingredient.name}</p>
+          <p>&nbsp;</p>
+          <p>{ingredient.RecipeIngredient.description || ''}</p>
+        </p>
       </div>
     )
   }
@@ -44,15 +46,19 @@ function RecipeView() {
           </div>
         </div>
       </div>
-      <div className="sm:flex gap-4">
-        <div className="bg-lightColor rounded-lg p-8 mt-4">
-          <h2 className="font-secondaryFont text-lg font-bold text-secondaryColor mb-8">Ingredientes</h2>
+      <div className=" sm:flex gap-4 mt-8">
+        <div className="border rounded-lg p-8 mt-4 min-w-[14rem] relative">
+          <div className="bg-secondaryColor p-4 mb-8 rounded-lg w-min absolute right-4 -top-6">
+            <h2 className="font-primaryFont text-lg font-bold text-white">Ingredientes</h2>
+          </div>
           {context.selectedRecipe.ingredients.map((ingredient, index) => (
             <IngredientItem key={index} ingredient={ingredient}/>
           ))}
         </div>
-        <div className="flex-1 bg-lightColor rounded-lg p-8 mt-4">
-          <h2 className="font-secondaryFont text-lg font-bold text-secondaryColor mb-8">Procedimiento</h2>
+        <div className="border rounded-lg p-8 mt-8 sm:mt-4 min-w-[14rem] flex-1 relative">
+          <div className="bg-secondaryColor p-4 mb-8 rounded-lg w-min absolute right-4 -top-6">
+            <h2 className="font-primaryFont text-lg font-bold text-white">Procedimiento</h2>
+          </div>
           <p className="font-secondaryFont" dangerouslySetInnerHTML={{ __html: context.selectedRecipe.procedure.replace(/\n/g, '<br/>') }}></p>
         </div>
       </div>
