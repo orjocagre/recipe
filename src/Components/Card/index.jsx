@@ -23,6 +23,7 @@ function Card({recipe}) {
   }
 
   function clickDelete(event) {
+    console.log('delete recipe')
     event.stopPropagation()
 
   }
@@ -39,11 +40,31 @@ function Card({recipe}) {
   }
   
   function menuLoseFocus(event) {
-    console.log(event)
-    console.log(btnDelete)
-    if(event.relatedTarget == btnDelete || event.relatedTarget == btnEdit) {
-      console.log('es uno de los botones')
-      return
+    try {
+
+      if(event.relatedTarget.attributes.name.value == 'btnDelete' || event.relatedTarget.attributes.name.value == 'btnEdit') {
+        fetch('http://localhost:3000/api/v1/recipes/' + recipe.id, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error al borrar la receta');
+            }
+            else {
+              console.log(recipe.id)
+              context.setRecipes(context.recipes.filter(function filt(rec) {
+                console.log(rec.id)
+                return rec.id != recipe.id
+              }))
+            }
+          })
+      }
+    }
+    catch(err) {
+      setMenuActive(false)
     }
     setMenuActive(false)
   }
@@ -125,11 +146,11 @@ function Card({recipe}) {
         }
         {context.account?.id == recipe.userId && menuActive &&
           <div className="absolute rounded-lg top-8 right-2 bg-white p-1 flex flex-col gap-1 shadow-lg">
-            <button className="font-secondaryFont text-sm font-medium text-secondaryColor p-2 hover:bg-lightColor hover:text-black rounded-lg flex items-center gap-2" ref={btnEdit} onClick={event => clickEdit(event)}>
+            <button className="font-secondaryFont text-sm font-medium text-secondaryColor p-2 hover:bg-lightColor hover:text-black rounded-lg flex items-center gap-2" name="btnEdit" ref={btnEdit} onClick={event => clickEdit(event)}>
               <PencilIcon className="w-6 h-6"/>
               Editar
             </button>
-            <button className="font-secondaryFont text-sm font-medium text-secondaryColor p-2 hover:bg-lightColor hover:text-black rounded-lg flex items-center gap-2" ref={btnDelete} onClick={event => clickDelete(event)}>
+            <button className="font-secondaryFont text-sm font-medium text-secondaryColor p-2 hover:bg-lightColor hover:text-black rounded-lg flex items-center gap-2" name="btnDelete" ref={btnDelete} onClick={event => clickDelete(event)}>
               <TrashIcon className="w-6 h-6"/>
               Eliminar
             </button>

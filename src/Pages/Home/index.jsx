@@ -32,7 +32,7 @@ function Home() {
     }
     // console.log('displayed Recipies')
     // console.log(displayedRecipes)
-  },[showAllRecipes, context.searchedRecipesHome])
+  },[showAllRecipes, context.searchedRecipesHome, context.recipes])
 
 
   function myRecipesButtonClick() {
