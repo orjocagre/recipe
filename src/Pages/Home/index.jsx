@@ -36,7 +36,7 @@ function Home() {
 
 
   function myRecipesButtonClick() {
-    if(Object.keys(context.account).length > 0) {
+    if(Object.keys(context.account).length > 0 && !context.isSignedOut) {
       setShowAllRecipes(false)
     }
     else {
@@ -45,7 +45,7 @@ function Home() {
   }
 
   function newRecipeButtonClick() {
-    if(Object.keys(context.account).length > 0) {
+    if(Object.keys(context.account).length > 0 && !context.isSignedOut) {
       navigate('/NewRecipe')
     }
     else {
