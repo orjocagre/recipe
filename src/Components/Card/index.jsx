@@ -139,7 +139,7 @@ function Card({recipe}) {
       <figure className="w-full h-1/2 relative">
         <span></span>
         <img className="w-full h-full object-cover rounded-lg" src={recipe.image ? recipe.image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiL2jQwQ5jf4rVj0CCh_PTZBqVHG-vK72HqeWyWIaIPMxKMx4DhEYr_4lfAKHP8S7RKTI&usqp=CAU'} alt="" />
-        {context.account?.id == recipe.userId && 
+        {context.account?.id == recipe.userId && context.isLogedIn && 
           <button className="absolute rounded-xl top-2 right-2 bg-white hover:bg-primaryColor" ref={btnRecipeMenu} onClick={event => clickRecipeMenu(event)} onBlur={event => menuLoseFocus(event)}>
             <EllipsisVerticalIcon className="w-6 h6 text-black" />
           </button>        
