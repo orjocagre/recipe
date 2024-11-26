@@ -193,7 +193,7 @@ function Login() {
 
   function SearchDropdown() {
     return (
-      <div className="absolute w-full top-10 left-0 z-30 flex flex-col drop-shadow-2xl rounded overflow-hidden bg-white">
+      <div className="absolute w-full max-h-[calc(2.25rem*4)] overflow-y-auto top-10 left-0 z-30 flex flex-col drop-shadow-2xl rounded overflow-hidden bg-white">
         {
         searchedIngredients && searchedIngredients.map(ingredient => (
           <SearchItem key={ingredient.id} ingredientId={ingredient.id} ingredientName={ingredient.name}/>
