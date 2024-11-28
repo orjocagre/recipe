@@ -38,6 +38,12 @@ function Login() {
       if(userRegularIngredients.find(ingredient => ingredient.name == searchIngredient)) {
         return
       }
+      const isIngredientAlreadyInList = context.ingredients.find(ingredient => ingredient.name == searchIngredient)
+      if(isIngredientAlreadyInList) {
+        addExistingIngredient(isIngredientAlreadyInList.name)
+        setSearchIngredient('')
+        return
+      }
       const ingredient = {id:null, name:searchIngredient}
       setUserRegularIngredients([...userRegularIngredients, ingredient])
       setSearchIngredient('')
@@ -45,7 +51,10 @@ function Login() {
   }
 
   function loseFocus(event) {
-    if(event.relatedTarget && event.relatedTarget.name) {
+    if(event.relatedTarget && event.relatedTarget.name == "deleteButton") {
+      removeIngredient(event.relatedTarget.attributes[1].value)
+    }
+    if(event.relatedTarget && event.relatedTarget.name && event.relatedTarget.name != "deleteButton") {
       addExistingIngredient(event.relatedTarget.name)
       setSearchIngredient('')
     }
@@ -216,7 +225,9 @@ function Login() {
     return (
       <div className="flex rounded-lg bg-lightColor p-1 items-center gap-2">
         <p className="font-secondaryFont">{ingredientName}</p>
-        <XCircleIcon className="w-4 h-4 cursor-pointer hover:text-secondaryColor" onClick={()=>(removeIngredient(ingredientName))}/>
+        <button name={"deleteButton"} ingredientName={ingredientName} onClick={()=>(removeIngredient(ingredientName))}>
+        <XCircleIcon className="w-4 h-4 cursor-pointer hover:text-secondaryColor"/>
+        </button>
       </div>
     );
   }
