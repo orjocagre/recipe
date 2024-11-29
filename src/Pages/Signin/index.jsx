@@ -79,65 +79,46 @@ function Login() {
     }))
   }
 
-  function saveIngredient(ingredient, userId) {
-    if(ingredient.id) {
+  function saveNewIngredient(ingredient, userId) {
+    return post('http://localhost:3000/api/v1/ingredients/', {
+      name: ingredient.name
+    })
+    .then(response => (response.json()))
+    .then(data => {
       console.log('http://localhost:3000/api/v1/regular_ingredients/')
       console.log({
         userId: userId, 
-        ingredientId: ingredient.id
+        ingredientId: data.id
       })
-      post('http://localhost:3000/api/v1/regular_ingredients/', {
-        userId: userId, 
-        ingredientId: ingredient.id
-      })
-      .then(response => {
-        if(!response.ok) {
-          throw new Error('Failed to save data')
-        }
-        else {
-          const data = response.json()
-          return(data)
-        }
-      })
+      return linkIngredientToUser(data, userId)
+    })
+  }
+
+  function linkIngredientToUser(ingredient, userId) {
+    return post('http://localhost:3000/api/v1/regular_ingredients/', {
+      userId: userId, 
+      ingredientId: ingredient.id
+    })
+    .then(response => {
+      if(!response.ok) {
+        throw new Error('Failed to save data')
+      }
+      else {
+        return response.json()
+      }
+    })
+  }
+
+  function saveIngredient(ingredient, userId) {
+    if(ingredient.id) {
+      return linkIngredientToUser(ingredient, userId)
     }
     else {
-      console.log('http://localhost:3000/api/v1/ingredients/')
-      console.log({
-        name: ingredient.name
-      })
-      post('http://localhost:3000/api/v1/ingredients/', {
-        name: ingredient.name
-      })
-      .then(response => (response.json()))
-      .then(data => {
-        console.log('http://localhost:3000/api/v1/regular_ingredients/')
-        console.log({
-          userId: userId, 
-          ingredientId: data.id
-        })
-        post('http://localhost:3000/api/v1/regular_ingredients/', {
-          userId: userId, 
-          ingredientId: data.id
-        })
-        .then(response => {
-          if(!response.ok) {
-            throw new Error('Failed to save data')
-          }
-          else {
-            const data = response.json()
-            return(data)
-          }
-        })
-      })
+      return saveNewIngredient(ingredient, userId)
     }
   }
 
   function logIn() {
-    console.log('http://localhost:3000/api/v1/users/login')
-        console.log({
-          userName: formData.userName,
-          password: formData.password,
-        })
     post('http://localhost:3000/api/v1/users/login', {
       userName: formData.userName,
       password: formData.password,
@@ -165,27 +146,25 @@ function Login() {
     const userObject = formData
     delete userObject.confirmPassword
 
-    console.log('http://localhost:3000/api/v1/users/')
-    console.log(userObject)
-
     post('http://localhost:3000/api/v1/users/', userObject)
     .then(response => {
       if(!response.ok) {
         throw new Error('Failed to save data')
       }
       else {
-        const data = response.json()
-        return data
+        return response.json()
       }
     })
     .then(data => (data.id))
     .then(userId => {
-      userRegularIngredients.map(ingredient => {
-        saveIngredient(ingredient, userId)
-      })
+      const promises = userRegularIngredients.map(ingredient => saveIngredient(ingredient, userId))
+      return Promise.all(promises)
     }
     )
     .then(() => logIn())
+    .catch(error => {
+      console.log('Error:', error)
+    })
   }
     
 
