@@ -71,6 +71,9 @@ export const RecipeProvider = ({ children }) => {
   // Recipe detail · Show recipe
   const [selectedRecipe, setSelectedRecipe] = useState(null)
 
+  // Save in db regular ingredients list or updates it if it is not a new user
+  const [saveRegularIngredients, setSaveRegularIngredients] = useState({startSave: false, userId: null, isNewUser: false})
+
 
   async function login(userName, password) {
     fetch('http://localhost:3000/api/v1/users/login', {
@@ -320,6 +323,8 @@ export const RecipeProvider = ({ children }) => {
         setSearchedByIngredientHome,
         textSearched,
         setTextSearched,
+        saveRegularIngredients,
+        setSaveRegularIngredients,
       }}
     >
       {children}
