@@ -3,40 +3,39 @@ import { createContext, useState, useEffect } from "react";
 export const RecipeContext = createContext();
 
 export const initializeLocalStorage = () => {
-  const accountInLocalStorage = localStorage.getItem('account')
-  const signOutInLocalStorage = localStorage.getItem('sign-out')
-  let parsedAccount
-  let parsedSignOut
+  const accountInLocalStorage = localStorage.getItem("account");
+  const signOutInLocalStorage = localStorage.getItem("sign-out");
+  let parsedAccount;
+  let parsedSignOut;
 
-  if(!accountInLocalStorage) {
-    localStorage.setItem('account', JSON.stringify({}))
-    parsedAccount = {}
+  if (!accountInLocalStorage) {
+    localStorage.setItem("account", JSON.stringify({}));
+    parsedAccount = {};
   } else {
-    parsedAccount = JSON.parse(accountInLocalStorage)
+    parsedAccount = JSON.parse(accountInLocalStorage);
   }
 
-  if(!signOutInLocalStorage) {
-    localStorage.setItem('sign-out', JSON.stringify(true))
-    parsedSignOut = true
+  if (!signOutInLocalStorage) {
+    localStorage.setItem("sign-out", JSON.stringify(true));
+    parsedSignOut = true;
   } else {
-    parsedSignOut = JSON.parse(signOutInLocalStorage)
+    parsedSignOut = JSON.parse(signOutInLocalStorage);
   }
-}
+};
 
 export const RecipeProvider = ({ children }) => {
-
-  console.log('rerender')
+  console.log("rerender");
 
   // Logged In account
-  const parsedAccount = JSON.parse(localStorage.getItem('account'))
-  const [account, setAccount] = useState(parsedAccount)
+  const parsedAccount = JSON.parse(localStorage.getItem("account"));
+  const [account, setAccount] = useState(parsedAccount);
 
   // Signed out
-  const parsedIsSignedOut = JSON.parse(localStorage.getItem('sign-out'))
-  const [isSignedOut, setIsSignedOut] = useState(parsedIsSignedOut)
+  const parsedIsSignedOut = JSON.parse(localStorage.getItem("sign-out"));
+  const [isSignedOut, setIsSignedOut] = useState(parsedIsSignedOut);
 
   // Trigger fetch account
-  const [updateAccount, setUpdateAccount] = useState(false)
+  const [updateAccount, setUpdateAccount] = useState(false);
 
   // Nav side menu (phone) · Open/Close
   const [isSideMenuActive, setIsSideMenuActive] = useState(false);
@@ -59,50 +58,61 @@ export const RecipeProvider = ({ children }) => {
   // List of searched recipes by ingredient (Search box) · Recipes grouped by ingredient
   const [searchedByIngredient, setSearchedByIngredient] = useState(null);
 
-  // Text searched (Home) 
-  const [textSearched, setTextSearched] = useState('')
+  // Text searched (Home)
+  const [textSearched, setTextSearched] = useState("");
 
   // List of searched recipes (Home) · Just recipes
   const [searchedRecipesHome, setSearchedRecipesHome] = useState(null);
 
   // List of searched recipes by ingredient (Home) · Recipes grouped by ingredient
-  const [searchedByIngredientHome, setSearchedByIngredientHome] = useState(null);
+  const [searchedByIngredientHome, setSearchedByIngredientHome] =
+    useState(null);
 
   // Recipe detail · Show recipe
-  const [selectedRecipe, setSelectedRecipe] = useState(null)
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   // Save in db regular ingredients list or updates it if it is not a new user
-  const [saveRegularIngredients, setSaveRegularIngredients] = useState({startSave: false, userId: null, isNewUser: false})
+  const [saveRegularIngredients, setSaveRegularIngredients] = useState({
+    startSave: false,
+    userId: null,
+    isNewUser: false,
+  });
 
+  // Temporal ingredient list (used when defining regular ingredients for new user or editing them in account, and when searching recipes by a list of ingredients)
+  const [tempIngredientList, setTempIngredientList] = useState(null);
+
+  // IngredientSelectorEditionState
+  const [ingredientSelectorEditionState, setIngredientSelectorEditionState] =
+    useState("unchanged");
 
   async function login(userName, password) {
-    fetch('http://localhost:3000/api/v1/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({userName, password})
-      })
-      .then(response => (response.json()))
-      .then(data =>  {
-        if(data && data.userName) {
-          setAccount(data)
-          setIsSignedOut(false)
-          localStorage.setItem('account', JSON.stringify(data))
-          localStorage.setItem('sign-out', JSON.stringify(false))
-          return true
+    fetch("http://localhost:3000/api/v1/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userName, password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.userName) {
+          setAccount(data);
+          setIsSignedOut(false);
+          localStorage.setItem("account", JSON.stringify(data));
+          localStorage.setItem("sign-out", JSON.stringify(false));
+          return true;
         }
-      })
+      });
   }
 
   useEffect(() => {
-    if(updateAccount) {
-      if(Object.keys(account).length > 0) {
-        login(account.userName, account.password)
+    if (updateAccount) {
+      if (Object.keys(account).length > 0) {
+        login(account.userName, account.password);
       }
-      setUpdateAccount(false)
+      setUpdateAccount(false);
     }
-  },[updateAccount])
+  }, [updateAccount]);
 
   // List of displayed Recipes
   // const recipeList = [
@@ -232,31 +242,27 @@ export const RecipeProvider = ({ children }) => {
   // ];
 
   useEffect(() => {
-
-    let userId = Object.keys(account).length > 0 ? account.id : ''
-    userId = isSignedOut ? '' : userId
+    let userId = Object.keys(account).length > 0 ? account.id : "";
+    userId = isSignedOut ? "" : userId;
 
     // Update recipe list
-    fetch(("http://localhost:3000/api/v1/recipes/all/" + userId))
+    fetch("http://localhost:3000/api/v1/recipes/all/" + userId)
       .then((response) => response.json())
       .then((data) => {
-        setRecipes(data)
-        setSearchedRecipesHome(data)
-        setSearchedByIngredientHome(null)
+        setRecipes(data);
+        setSearchedRecipesHome(data);
+        setSearchedByIngredientHome(null);
       });
 
     // Update ingredient list
-    userId = userId ? userId : 0
-    console.log(userId)
+    userId = userId ? userId : 0;
+    console.log(userId);
     fetch("http://localhost:3000/api/v1/ingredients/user/" + userId)
       .then((response) => response.json())
       .then((data) => setIngredients(data));
   }, [account, isSignedOut]);
 
-  
-
   useEffect(() => {
-
     if (searchRecipeOrIngredient) {
       setIsSearchActive(true);
 
@@ -325,6 +331,10 @@ export const RecipeProvider = ({ children }) => {
         setTextSearched,
         saveRegularIngredients,
         setSaveRegularIngredients,
+        tempIngredientList,
+        setTempIngredientList,
+        ingredientSelectorEditionState,
+        setIngredientSelectorEditionState,
       }}
     >
       {children}

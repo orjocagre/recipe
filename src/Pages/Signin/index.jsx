@@ -1,10 +1,10 @@
 import Layout from "../../Components/Layout";
-import CommonIngredients from "../../Components/RegularIngredients";
+import RegularIngredients from "../../Components/RegularIngredients";
 import { Link, useNavigate } from "react-router-dom";
 import { RecipeContext } from "../../Context";
 import { useContext, useEffect, useState } from "react";
 
-function Login() {
+function SignIn() {
   const context = useContext(RecipeContext);
   const navigate = useNavigate()
 
@@ -97,7 +97,7 @@ function Login() {
             <p className="font-secondaryFont text-sm text-red-600">Las contraseñas no coinciden</p> :
             <p className="hidden">Las contraseñas no coinciden</p>
           }
-          <CommonIngredients/>
+          <RegularIngredients/>
 
           <button className="font-secondaryFont p-4 rounded-lg text-secondaryColor border-2 border-secondaryColor font-bold text-lg mt-8 hover:scale-105 transition-transform" type="submit" onClick={event => handleSubmit(event)}>Enviar</button>
           <div className="flex gap-2 mt-4 self-center">
@@ -110,4 +110,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignIn;
