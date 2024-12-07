@@ -88,11 +88,11 @@ function SignIn() {
             Crear cuenta
           </h1>
           <p className="font-secondaryFont mt-6">Nombre de usuario</p>
-          <input className="font-secondaryFont bg-lightColor rounded-lg p-2 w-full focus:outline-none" type="text" name="userName" value={formData.userName} onChange={event => handleChange(event)}/>
+          <input className="font-secondaryFont bg-whiteColor border border-secondaryColor rounded-lg p-2 w-full focus:outline-none" type="text" name="userName" value={formData.userName} onChange={event => handleChange(event)}/>
           <p className="font-secondaryFont mt-6">Contraseña</p>
-          <input className="font-secondaryFont bg-lightColor rounded-lg p-2 w-full focus:outline-none" type="password" name="password" value={formData.password} onChange={event => handleChange(event)}/>
+          <input className="font-secondaryFont bg-whiteColor border border-secondaryColor rounded-lg p-2 w-full focus:outline-none" type="password" name="password" value={formData.password} onChange={event => handleChange(event)}/>
           <p className="font-secondaryFont mt-6">Confirmar contraseña</p>
-          <input className="font-secondaryFont bg-lightColor rounded-lg p-2 w-full focus:outline-none" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={event => handleChange(event)}/>
+          <input className="font-secondaryFont bg-whiteColor border border-secondaryColor rounded-lg p-2 w-full focus:outline-none" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={event => handleChange(event)}/>
           {errorConfirmPassword ? 
             <p className="font-secondaryFont text-sm text-red-600">Las contraseñas no coinciden</p> :
             <p className="hidden">Las contraseñas no coinciden</p>

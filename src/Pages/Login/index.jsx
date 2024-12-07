@@ -58,7 +58,7 @@ function Login() {
           <h1 className="text-lg font-secondaryFont self-center">Login</h1>
           <p className="font-secondaryFont mt-6">Nombre de usuario</p>
           <input
-            className="font-secondaryFont bg-lightColor rounded-lg p-2 w-full focus:outline focus:outline-1"
+            className="font-secondaryFont bg-whiteColor border border-secondaryColor rounded-lg p-2 w-full focus:outline focus:outline-1"
             type="text"
             name="userName"
             value={formData.userName}
@@ -66,7 +66,7 @@ function Login() {
           />
           <p className="font-secondaryFont mt-6">Contraseña</p>
           <input
-            className="font-secondaryFont bg-lightColor rounded-lg p-2 w-full focus:outline focus:outline-1"
+            className="font-secondaryFont bg-whiteColor border border-secondaryColor rounded-lg p-2 w-full focus:outline focus:outline-1"
             type="text"
             name="password"
             value={formData.password}

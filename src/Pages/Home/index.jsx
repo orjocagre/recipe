@@ -111,9 +111,9 @@ function Home() {
   const selectedStyle = "p-2 font-secondaryFont border-b-2 border-primaryColor";
   const unSelectedStyle = "p-2 font-secondaryFont hover:text-secondaryColor";
   const specialSearchUnselectedStyle =
-    "font-secondaryFont bg-primaryColor text-black border border-primaryColor p-2 rounded-lg flex items-center gap-1 w-min sm:w-auto";
+    "font-secondaryFont bg-primaryColor text-black p-2 rounded-lg flex items-center gap-1 w-min sm:w-auto hover:scale-105 transition-transform";
   const specialSearchSelectedStyle =
-    "font-secondaryFont bg-primaryColor text-black border border-primaryColor p-2 rounded-lg flex items-center gap-1 w-min sm:w-auto";
+    "font-secondaryFont bg-primaryColor text-black shadow-innerCustom p-2 rounded-lg flex items-center gap-1 w-min sm:w-auto transition-transform";
 
   return (
     <Layout>
@@ -123,7 +123,9 @@ function Home() {
       >
         <PlusIcon className="h-6 w-6" />
       </NavLink>
+      {/* mainheader */}
       <div className="flex justify-between">
+        {/* filters */}
         <div className="flex gap-2">
           <button
             className={showAllRecipes ? selectedStyle : unSelectedStyle}
@@ -138,29 +140,49 @@ function Home() {
             Solo mis recetas
           </button>
         </div>
+        {/* buttons */}
         <div className="flex gap-2">
           <button
-            onClick={() => specialSearchButtonClick()}
-            className="font-secondaryFont bg-primaryColor text-black border border-darkColor p-2 rounded-lg flex items-center gap-1 w-min sm:w-auto"
-          >
-            <MagnifyingGlassPlusIcon className="h6 w-6" />
-            Busqueda especial
-          </button>
-          <button
             onClick={() => newRecipeButtonClick()}
-            className="font-secondaryFont bg-primaryColor text-black border border-primaryColor p-2 rounded-lg flex items-center gap-1 hidden sm:flex"
+            className="font-secondaryFont bg-primaryColor text-black border border-primaryColor p-2 rounded-lg flex items-center gap-1 hidden sm:flex hover:scale-105 transition-transform"
           >
             <PlusIcon className="h-6 w-6" />
             Agregar nueva
           </button>
+          <button
+            onClick={() => specialSearchButtonClick()}
+            className={
+              specialSearch
+                ? specialSearchSelectedStyle
+                : specialSearchUnselectedStyle
+            }
+          >
+            <MagnifyingGlassPlusIcon className="h6 w-6" />
+            Busqueda especial
+          </button>
         </div>
       </div>
+      {/* mainbody */}
       <div className="flex flex-col">
+        {/* specialSearchContainer */}
         {specialSearch && (
-          <form className="mt-4 p-4 border border-black rounded-lg">
-            <IngredientsSelector />
-          </form>
+          <div className="shadow-innerCustom mt-4 md:flex justify-center items-center rounded-lg gap-8 p-8">
+            <div className="flex-col justify-center">
+              <h2 className="font-primaryFont text-2xl font-extrabold text-darkColor mb-2">
+                BUSCAR CON MIS INGREDIENTES
+              </h2>
+              <p className="font-secondaryFont font-light mb-4">
+                Ingresa los ingredientes disponibles en tu cocina y obtén una
+                lista de recetas compatibles
+              </p>
+            </div>
+            <form className="rounded-lg max-w-96">
+              <IngredientsSelector />
+            </form>
+          </div>
         )}
+
+        {/* cardsContainer */}
         <div>
           {context.textSearched && (
             <p className="font-secondaryFont mt-8 text-lg bg-lightColor rounded-lg p-2">

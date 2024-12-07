@@ -24,7 +24,11 @@ function IngredientsSelector({ recipe }) {
     const selectedIngredient = context.ingredients.find(
       (ingredient) => ingredient.name == name
     );
-    if (!context.tempIngredientList.some(ingredient => selectedIngredient.name == ingredient.name)) {
+    if (
+      !context.tempIngredientList.some(
+        (ingredient) => selectedIngredient.name == ingredient.name
+      )
+    ) {
       context.setTempIngredientList([
         ...context.tempIngredientList,
         selectedIngredient,
@@ -63,7 +67,7 @@ function IngredientsSelector({ recipe }) {
 
   function loseFocus(event) {
     if (event.relatedTarget && event.relatedTarget.name == "deleteButton") {
-      removeIngredient(event.relatedTarget.getAttribute('data-ingredientName'));
+      removeIngredient(event.relatedTarget.getAttribute("data-ingredientName"));
     }
     if (
       event.relatedTarget &&
@@ -91,16 +95,19 @@ function IngredientsSelector({ recipe }) {
 
   function SearchDropdown() {
     return (
-      <div className="absolute w-full max-h-[calc(2.25rem*4)] overflow-y-auto top-10 left-0 z-30 flex flex-col drop-shadow-2xl rounded overflow-hidden bg-white">
-        {searchedIngredients &&
-          searchedIngredients.map((ingredient) => (
-            <SearchItem
-              key={ingredient.id}
-              ingredientId={ingredient.id}
-              ingredientName={ingredient.name}
-            />
-          ))}
-      </div>
+      <>
+        {searchedIngredients && (
+          <div className="absolute w-full max-h-[calc(2.25rem*4)] overflow-y-auto top-10 left-0 z-30 flex flex-col drop-shadow-2xl rounded overflow-hidden bg-whiteColor border border-secondaryColor">
+            {searchedIngredients.map((ingredient) => (
+              <SearchItem
+                key={ingredient.id}
+                ingredientId={ingredient.id}
+                ingredientName={ingredient.name}
+              />
+            ))}
+          </div>
+        )}
+      </>
     );
   }
 
@@ -109,7 +116,7 @@ function IngredientsSelector({ recipe }) {
       <>
         <button
           name={ingredientName}
-          className="font-secondaryFont p-2 text-sm hover:bg-secondaryColor hover:text-lightColor text-left"
+          className="font-secondaryFont p-2 text-sm hover:bg-secondaryColor hover:text-whiteColor text-left"
           onClick={() => {
             addExistingIngredient(ingredientName);
           }}
@@ -122,7 +129,7 @@ function IngredientsSelector({ recipe }) {
 
   function IngredientItem({ ingredientName }) {
     return (
-      <div className="flex rounded-lg bg-lightColor p-1 items-center gap-2">
+      <div className="flex rounded-lg border border-secondaryColor text-black p-1 items-center gap-2">
         <p className="font-secondaryFont">{ingredientName}</p>
         <button
           name={"deleteButton"}
@@ -137,9 +144,9 @@ function IngredientsSelector({ recipe }) {
 
   return (
     <>
-      <div className="relative bg-lightColor rounded flex">
+      <div className="relative bg-whiteColor rounded-lg flex border border-secondaryColor">
         <input
-          className="font-secondaryFont bg-lightColor rounded-lg p-2 w-full focus:outline-none"
+          className="font-secondaryFont bg-transparent rounded-lg p-2 w-full focus:outline-none"
           type="text"
           value={searchIngredient}
           onChange={(event) => setSearchIngredient(event.target.value)}
@@ -154,7 +161,7 @@ function IngredientsSelector({ recipe }) {
         </button>
         <SearchDropdown />
       </div>
-      <div className="mt-2 flex gap-4 flex-wrap">
+      <div className="mt-2 flex gap-2 flex-wrap">
         {context.tempIngredientList &&
           context.tempIngredientList.map((ingredient) => (
             <IngredientItem

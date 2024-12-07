@@ -15,9 +15,9 @@ function Navbar() {
   const [isAccountMenuActive, setIsAccountMenuActive] = useState(false);
 
   const activeUserContainer =
-    "absolute right-0 top-14 bg-white rounded-lg shadow-lg flex flex-col p-1";
+    "absolute right-0 top-14 bg-whiteColor rounded-lg shadow-lg flex flex-col p-1";
   const inactiveUserContainer =
-    "hidden absolute right-0 top-14 bg-white rounded-lg shadow-lg flex flex-col p-1";
+    "hidden absolute right-0 top-14 bg-whiteColor rounded-lg shadow-lg flex flex-col p-1";
 
   const activeStyleButton =
     "font-secondaryFont text-lg font-bold text-white border-b-2 border-white hidden sm:block";
@@ -81,25 +81,25 @@ function Navbar() {
   let searchInput;
 
   searchBackButton = "hidden w-6 h-6 text-lightColor";
-  headerLogo = "text-4xl font-primaryFont text-primaryColor font-bold";
+  headerLogo = "text-4xl font-primaryFont text-whiteColor font-bold";
   searchButton = "h-6 w-6 text-white sm:text-darkColor";
   cancelSearchButton = "hidden w-6 h-6 text-lightColor cursor-pointer";
   hamburgerButton = "h-6 w-6 sm:hidden text-white";
   searchContainer =
-    "sm:absolute sm:w-1/2 sm:left-1/4 h-10 p-2 rounded-lg sm:bg-lightColor flex items-center";
+    "sm:absolute sm:w-1/2 sm:left-1/4 h-10 p-2 rounded-lg sm:bg-whiteColor flex items-center";
   searchInput =
-    "flex-1 rounded-lg p-2 hidden sm:block bg-lightColor font-secondaryFont focus:outline-none";
+    "flex-1 rounded-lg p-2 hidden sm:block bg-transparent font-secondaryFont focus:outline-none";
 
   if (context.isSearchActive) {
     if (window.innerWidth < 640) {
       searchBackButton = "w-6 h-6 text-lightColor";
       headerLogo =
-        "hidden text-4xl font-primaryFont text-primaryColor font-bold";
+        "hidden text-4xl font-primaryFont text-whiteColor font-bold";
       searchButton = "hidden h-6 w-6 text-white sm:text-darkColor";
       cancelSearchButton = "w-6 h-6 text-lightColor";
       hamburgerButton = "hidden h-6 w-6 sm:hidden text-white";
       searchContainer =
-        "sm:static w-full sm:w-1/2 h-10 rounded-lg sm:bg-lightColor flex items-center";
+        "sm:static w-full sm:w-1/2 h-10 rounded-lg sm:bg-whiteColor flex items-center";
       searchInput =
         "flex-1 rounded-lg p-2 sm:block bg-secondaryColor sm:bg-lightColor font-secondaryFont text-lightColor focus:outline-none";
     } else {
@@ -109,7 +109,7 @@ function Navbar() {
   }
 
   return (
-    <header className="fixed p-4 shadow-md h-14 w-full bg-secondaryColor left-0 top-0 flex items-center justify-between">
+    <header className="fixed p-4 shadow-3xl h-14 w-full bg-secondaryColor left-0 top-0 flex items-center justify-between">
       <Bars3Icon
         onClick={() => context.setIsSideMenuActive(!context.isSideMenuActive)}
         className={hamburgerButton}
@@ -146,7 +146,7 @@ function Navbar() {
       </div>
       {Object.keys(context.account).length > 0 && !context.isSignedOut ? (
         <button
-          className="font-secondaryFont text-lg font-bold text-lightColor hidden sm:block"
+          className="font-secondaryFont text-lg font-bold text-whiteColor hidden sm:block"
           onClick={() => setIsAccountMenuActive(!isAccountMenuActive)}
           onBlur={(event) => menuLoseFocus(event)}
         >
@@ -155,7 +155,7 @@ function Navbar() {
       ) : (
         <NavLink
           to="/Login"
-          className="font-secondaryFont text-lg font-bold text-lightColor hidden sm:block"
+          className="font-secondaryFont text-lg font-bold text-whiteColor hidden sm:block"
         >
           Iniciar Sesion
         </NavLink>
@@ -167,7 +167,7 @@ function Navbar() {
         }
       >
         <button
-          className="font-secondaryFont text-lg p-3 bg-white rounded-lg hover:bg-lightColor"
+          className="font-secondaryFont text-lg p-3 bg-transparent rounded-lg hover:bg-lightColor"
           name="btnMyAccount"
           onClick={() => openMyAccount()}
         >
@@ -175,7 +175,7 @@ function Navbar() {
         </button>
         <NavLink
           to="/Login"
-          className="font-secondaryFont text-lg p-3 bg-white rounded-lg hover:bg-lightColor text-red-600"
+          className="font-secondaryFont text-lg p-3 bg-transparent rounded-lg hover:bg-lightColor text-red-600"
           name="btnCerrarSesion"
           onClick={() => handleSignOut()}
         >
