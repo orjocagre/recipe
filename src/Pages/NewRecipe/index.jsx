@@ -11,7 +11,7 @@ function NewRecipe() {
 
   const [formData, setFormData] = useState({
     name: "",
-    procedure: "",
+    procedure: "1. ",
     servings: "",
     hours: "",
     minutes: "",
@@ -29,6 +29,7 @@ function NewRecipe() {
   const [selectedImage, setSelectedImage] = useState(null);
   const imgRef = useRef(null);
   const imgInputRef = useRef(null);
+  const cantInputRef = useRef(null);
 
   useEffect(() => {
     if (searchIngredient && inputFocus) {
@@ -83,6 +84,7 @@ function NewRecipe() {
       ]);
       setSearchIngredient("");
       setFormData({ ...formData, amount: "", description: "" });
+      cantInputRef.current.focus();
     }
   }
 
@@ -94,6 +96,42 @@ function NewRecipe() {
       // setSearchIngredient('')
     }
     setInputFocus(false);
+  }
+
+  function handleWriteTextarea(event) {
+    if (event.key != "Enter" && event.key != "Backspace") return;
+
+    let textarea = event.target;
+    let newText = textarea.value;
+    let caretIndex = textarea.selectionStart;
+
+    if (event.key == "Backspace") {
+      if (newText == "1.") newText = "1. ";
+
+      if (
+        newText.substring(caretIndex - 3, caretIndex).search(/\n\d+\./) != -1
+      ) {
+        newText = newText
+          .substring(0, caretIndex - 3)
+          .concat(newText.substring(caretIndex));
+
+        caretIndex -= 6;
+      } else {
+        caretIndex -= 3;
+      }
+    }
+
+    newText = newText.substring(0, 3) != "1. " ? "1. " + newText : newText;
+    let counter = 2;
+
+    newText = newText
+      .replaceAll(/\n\d+\. /g, () => `\n`)
+      .replaceAll("\n", () => `\n${counter++}. `);
+
+    caretIndex += 3;
+    textarea.value = newText;
+    textarea.selectionStart = caretIndex;
+    textarea.selectionEnd = caretIndex;
   }
 
   function handleChange(event) {
@@ -111,6 +149,12 @@ function NewRecipe() {
       ...formData,
       [name]: value,
     });
+  }
+
+  function handleEnter(event) {
+    if (event.key === "Enter") {
+      addNewIngredient(event);
+    }
   }
 
   function handleFiles(event) {
@@ -298,16 +342,19 @@ function NewRecipe() {
 
   function SearchDropdown() {
     return (
-      <div className="absolute w-full top-20 left-0 z-30 flex flex-col drop-shadow-2xl rounded overflow-hidden bg-whiteColor border border-secondaryColor">
-        {searchedIngredients &&
-          searchedIngredients.map((ingredient) => (
-            <SearchItem
-              key={ingredient.id}
-              ingredientId={ingredient.id}
-              ingredientName={ingredient.name}
-            />
-          ))}
-      </div>
+      <>
+        {searchedIngredients && (
+          <div className="absolute w-full top-20 left-0 z-30 flex flex-col drop-shadow-2xl rounded overflow-hidden bg-whiteColor border border-secondaryColor">
+            {searchedIngredients.map((ingredient) => (
+              <SearchItem
+                key={ingredient.id}
+                ingredientId={ingredient.id}
+                ingredientName={ingredient.name}
+              />
+            ))}
+          </div>
+        )}
+      </>
     );
   }
 
@@ -514,8 +561,10 @@ function NewRecipe() {
                         type="text"
                         id="txtAmount"
                         name="amount"
+                        ref={cantInputRef}
                         value={formData.amount}
                         onChange={(event) => handleChange(event)}
+                        onKeyDown={(event) => handleEnter(event)}
                       />
                     </div>
                     <div className="relative flex flex-col">
@@ -526,7 +575,7 @@ function NewRecipe() {
                         Ingrediente*
                       </label>
                       <input
-                        className="font-secondaryFont p-2 bg-whiteColor border-t border-secondaryColor focus:outline-none w-[calc(calc(100vw-3.5rem)/3)] sm:w-auto"
+                        className="font-secondaryFont p-2 bg-whiteColor border-t border-b border-secondaryColor focus:outline-none w-[calc(calc(100vw-3.5rem)/3)] sm:w-auto"
                         type="text"
                         id="txtIngredient"
                         value={searchIngredient}
@@ -535,6 +584,7 @@ function NewRecipe() {
                         }
                         onFocus={() => setInputFocus(true)}
                         onBlur={(event) => loseFocus(event)}
+                        onKeyDown={(event) => handleEnter(event)}
                       />
                       <SearchDropdown />
                     </div>
@@ -552,6 +602,7 @@ function NewRecipe() {
                         name="description"
                         value={formData.description}
                         onChange={(event) => handleChange(event)}
+                        onKeyDown={(event) => handleEnter(event)}
                       />
                     </div>
                     <button
@@ -584,6 +635,7 @@ function NewRecipe() {
                   className="font-secondaryFont p-2 bg-whiteColor border border-secondaryColor rounded-lg focus:outline-none h-48"
                   name="procedure"
                   value={formData.procedure}
+                  onKeyUp={(event) => handleWriteTextarea(event)}
                   onChange={(event) => handleChange(event)}
                   id="txtProcedure"
                 ></textarea>
